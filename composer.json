@@ -2,6 +2,8 @@
     "name": "bravo3/properties",
     "type": "library",
     "description": "YAML property loader",
+    "keywords": ["properties", "config"],
+    "license": "MIT",
     "autoload": {
         "psr-0": { "": ["src/", "tests/"] }
     },
