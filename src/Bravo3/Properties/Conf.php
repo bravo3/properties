@@ -35,16 +35,17 @@ class Conf implements \ArrayAccess
             $path .= DIRECTORY_SEPARATOR;
         }
 
-        $conf_file = $path.$fn;
-        if (!is_readable($conf_file)) {
-            $conf_file .= '.dist';
+        $conf_file = new \SplFileInfo($path . $fn);
 
-            if (!is_readable($conf_file)) {
-                throw new UnreadableConfigException($conf_file);
+        if (!$conf_file->isReadable()) {
+            $conf_file = new \SplFileInfo($path . $fn . '.dist');
+
+            if (!$conf_file->isReadable()) {
+                throw new UnreadableConfigException($conf_file->getRealPath());
             }
         }
 
-        $this->data = Yaml::parse($conf_file);
+        $this->data = Yaml::parse(file_get_contents($conf_file->getRealPath()));
     }
 
     protected function __clone()
@@ -165,4 +166,3 @@ class Conf implements \ArrayAccess
         throw new ReadOnlyException("Cannot unset predefined properties");
     }
 }
- 
